@@ -440,10 +440,9 @@ function SendSwapGem(swap) {
 	data.putInt("index2", parseInt(indexSwap[1]));
 
 	axios.post(
-		'http://localhost:3001/metadiscs/test',
+		'http://gems.dungxbuif.com:5000/api/train-data',
 		fullData)
 		.then((data) => console.log(data))
-	// baseAPI.postApi('metadiscs', fullData)
 	console.log("Full data to check ", fullData)
 
 	SendExtensionRequest(SWAP_GEM, data);

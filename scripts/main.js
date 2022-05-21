@@ -53,10 +53,6 @@ visualizer.start();
 // Connect to Game server
 initConnection();
 
-// const params = new Proxy(new URLSearchParams(window.location.search), {
-// 	get: (searchParams, prop) => searchParams.get(prop),
-// });
-
 if (params.username) {
 	document.querySelector('#accountIn').value = params.username;
 }
@@ -342,6 +338,7 @@ function AssignPlayers(room) {
 		botPlayer = new Player(playerId2, "player" + playerId2);
 		enemyPlayer = new Player(playerId1, "player" + playerId1);
 	}
+
 }
 
 function EndGame() {
@@ -364,10 +361,9 @@ function SendFinishTurn(isFirstTurn) {
 
 
 function StartTurn(param) {
-	currentPlayerId = param.getInt("currentPlayerId");
-	visualizer.snapShot();
-
 	setTimeout(function () {
+		visualizer.snapShot();
+		currentPlayerId = param.getInt("currentPlayerId");
 		if (!isBotTurn()) {
 			trace("not isBotTurn");
 			return;
@@ -440,7 +436,7 @@ function SendSwapGem(swap) {
 	data.putInt("index2", parseInt(indexSwap[1]));
 
 	axios.post(
-		'http://gems.dungxbuif.com:5000/api/train-data',
+		'http://gems.dungxbuif.com/api/train-data',
 		fullData)
 		.then((data) => console.log(data))
 	console.log("Full data to check ", fullData)
@@ -484,7 +480,7 @@ function HandleGems(paramz) {
 
 	grid.updateGems(gemCode, gemModifiers);
 
-	setTimeout(function () { SendFinishTurn(false) }, delaySwapGem);
+	// setTimeout(function () { SendFinishTurn(false) }, delaySwapGem);
 }
 
 function HandleHeroes(paramz) {

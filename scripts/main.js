@@ -486,6 +486,7 @@ function HandleGems(paramz) {
 
 function HandleHeroes(paramz) {
 	let heroesBotPlayer = paramz.getSFSArray(botPlayer.displayName);
+	console.log("BOT")
 	for (let i = 0; i < botPlayer.heroes.length; i++) {
 		botPlayer.heroes[i].updateHero(heroesBotPlayer.getSFSObject(i));
 	}
@@ -493,6 +494,7 @@ function HandleHeroes(paramz) {
 	// console.log("BOT", botPlayer)
 
 	let heroesEnemyPlayer = paramz.getSFSArray(enemyPlayer.displayName);
+	console.log("ENEMY")
 	for (let i = 0; i < enemyPlayer.heroes.length; i++) {
 		enemyPlayer.heroes[i].updateHero(heroesEnemyPlayer.getSFSObject(i));
 	}

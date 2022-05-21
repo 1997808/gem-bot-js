@@ -22,7 +22,6 @@ const HeroIdEnum = {
     GIANT_SNAKE: 106
 };
 
-
 class Hero {
     constructor(objHero) {
         this.objHero = objHero;
@@ -45,6 +44,18 @@ class Hero {
     }
 
     updateHero(objHero) {
+        if (objHero.getInt("attack") != this.attack) {
+            console.log('change atk ', objHero.getInt("attack") - this.attack)
+        }
+        if (objHero.getInt("hp") != this.hp) {
+            console.log('change hp ', objHero.getInt("hp") - this.hp)
+        }
+        if (objHero.getInt("mana") != this.mana) {
+            console.log('change mana ', objHero.getInt("mana") - this.mana)
+        }
+        if (objHero.getInt("maxMana") != this.maxMana) {
+            console.log('change maxMana ', objHero.getInt("maxMana") - this.maxMana)
+        }
         this.attack = objHero.getInt("attack");
         this.hp = objHero.getInt("hp");
         this.mana = objHero.getInt("mana");

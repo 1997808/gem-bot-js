@@ -377,6 +377,8 @@ function StartTurn(param) {
 					fullData)
 					.then((data) => console.log(data))
 				console.log("Full data to check ", fullData)
+				console.log('Evaluation ', Math.floor((fullPointBot + fullPointEnemy) * 100) / 100)
+				console.log('Evaluation this turn ', fullData.label)
 			}
 			fullPointBot += pointBot
 			fullPointEnemy += pointEnemy

@@ -54,9 +54,9 @@ class Hero {
         if (attackChange != 0) {
             change = true
             if (botTeam) {
-                pointBase += 0.03 * attackChange
+                pointBase += 0.1 * attackChange
             } else {
-                pointBase -= 0.03 * attackChange
+                pointBase -= 0.1 * attackChange
             }
         }
 
@@ -65,27 +65,27 @@ class Hero {
             if (botTeam) {
                 if (botTurn) {
                     // bot turn to bot team
-                    pointBase += 0.05 * hpChange
+                    pointBase += 0.25 * hpChange
                 } else {
                     // enemy turn to bot team
-                    pointBase += 0.05 * hpChange
+                    pointBase += 0.25 * hpChange
 
                     // dead
                     if (objHero.getInt("hp") == 0) {
-                        pointBase -= 1
+                        pointBase -= 1.5
                     }
                 }
             } else {
                 if (botTurn) {
                     // bot turn to enemy team
-                    pointBase -= 0.05 * hpChange
+                    pointBase -= 0.25 * hpChange
 
                     if (objHero.getInt("hp") == 0) {
-                        pointBase += 1
+                        pointBase += 1.5
                     }
                 } else {
                     // enemy turn to enemy team
-                    pointBase -= 0.05 * hpChange
+                    pointBase -= 0.25 * hpChange
                 }
             }
         }
@@ -93,16 +93,16 @@ class Hero {
         if (manaChange != 0) {
             change = true
             if (botTeam) {
-                pointBase += 0.1 * manaChange
+                pointBase += 0.3 * manaChange
                 // get mana to full
                 if (fullMana == 0) {
-                    pointBase += 0.5
+                    pointBase += 1.2
                 }
             } else {
-                pointBase -= 0.1 * manaChange
+                pointBase -= 0.3 * manaChange
                 // enemy get mana to full
                 if (fullMana == 0) {
-                    pointBase -= 0.5
+                    pointBase -= 1.2
                 }
             }
         }

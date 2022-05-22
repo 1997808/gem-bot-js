@@ -43,19 +43,71 @@ class Hero {
         }
     }
 
-    updateHero(objHero) {
-        if (objHero.getInt("attack") != this.attack) {
-            console.log('change atk ', objHero.getInt("attack") - this.attack)
+    updateHero(objHero, team) {
+        let botTurn = isBotTurn()
+        let botTeam = team === 'BOT' ? true : false
+        let change = false
+        let attackChange = objHero.getInt("attack") - this.attack
+        let hpChange = objHero.getInt("hp") - this.hp
+        let manaChange = objHero.getInt("mana") - this.mana
+        let fullMana = objHero.getInt("maxMana") - objHero.getInt("mana")
+        if (attackChange != 0) {
+            change = true
+            if (botTeam) {
+                pointBase += 0.03 * attackChange
+            } else {
+                pointBase -= 0.03 * attackChange
+            }
         }
-        if (objHero.getInt("hp") != this.hp) {
-            console.log('change hp ', objHero.getInt("hp") - this.hp)
+
+        if (hpChange != 0) {
+            change = true
+            if (botTeam) {
+                if (botTurn) {
+                    // bot turn to bot team
+                    pointBase += 0.05 * hpChange
+                } else {
+                    // enemy turn to bot team
+                    pointBase += 0.05 * hpChange
+
+                    // dead
+                    if (objHero.getInt("hp") == 0) {
+                        pointBase -= 1
+                    }
+                }
+            } else {
+                if (botTurn) {
+                    // bot turn to enemy team
+                    pointBase -= 0.05 * hpChange
+
+                    if (objHero.getInt("hp") == 0) {
+                        pointBase += 1
+                    }
+                } else {
+                    // enemy turn to enemy team
+                    pointBase -= 0.05 * hpChange
+                }
+            }
         }
-        if (objHero.getInt("mana") != this.mana) {
-            console.log('change mana ', objHero.getInt("mana") - this.mana)
+
+        if (manaChange != 0) {
+            change = true
+            if (botTeam) {
+                pointBase += 0.1 * manaChange
+                // get mana to full
+                if (fullMana == 0) {
+                    pointBase += 0.5
+                }
+            } else {
+                pointBase -= 0.1 * manaChange
+                // enemy get mana to full
+                if (fullMana == 0) {
+                    pointBase -= 0.5
+                }
+            }
         }
-        if (objHero.getInt("maxMana") != this.maxMana) {
-            console.log('change maxMana ', objHero.getInt("maxMana") - this.maxMana)
-        }
+        pointBase = Math.floor(pointBase * 100) / 100
+
         this.attack = objHero.getInt("attack");
         this.hp = objHero.getInt("hp");
         this.mana = objHero.getInt("mana");

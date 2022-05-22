@@ -35,6 +35,13 @@ var botPlayer;
 var enemyPlayer;
 var currentPlayerId;
 var grid;
+
+var turn = 0
+var pointBase = 0
+var pointBot = 0
+var fullPointBot = 0
+var pointEnemy = 0
+var fullPointEnemy = 0
 var fullData = {
 	currentBoard: [],
 	bot: [],
@@ -43,7 +50,7 @@ var fullData = {
 	label: 0
 };
 
-const username = "khanhn2";
+const username = "dungxbuif";
 const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzMDM0NjMxNDQyLCJleHAiOjE2NTQ4MzQ2MzF9.sVLkUJU4-1UNswatSxpfdTa3bZxivSIbSwua7qKm195YWwqK6EzSfDa2w0UJvIjgOYl8pY_SXgu-ie0IREmRVg";
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
@@ -344,10 +351,10 @@ function AssignPlayers(room) {
 function EndGame() {
 	isJoinGameRoom = false;
 
-	document.getElementById("log").innerHTML = "";
+	document.getElementById("log").innerHTML =
+		"fullPointBot " + fullPointBot + "   fullPointEnemy " + fullPointEnemy;
 	visualizer.snapShot();
 }
-
 
 function SendFinishTurn(isFirstTurn) {
 	let data = new SFS2X.SFSObject();
@@ -356,15 +363,26 @@ function SendFinishTurn(isFirstTurn) {
 	trace("sendExtensionRequest()|room:" + room.name + "|extCmd:" + FINISH_TURN + " first turn " + isFirstTurn);
 
 	SendExtensionRequest(FINISH_TURN, data);
-
 }
-
 
 function StartTurn(param) {
 	setTimeout(function () {
 		visualizer.snapShot();
 		currentPlayerId = param.getInt("currentPlayerId");
-		if (!isBotTurn()) {
+		if (isBotTurn()) {
+			if (turn !== 0) {
+				fullData.label = Math.floor((pointBot + pointEnemy) * 100) / 100
+				axios.post(
+					'http://localhost:3001/metadiscs/test',
+					fullData)
+					.then((data) => console.log(data))
+				console.log("Full data to check ", fullData)
+			}
+			fullPointBot += pointBot
+			fullPointEnemy += pointEnemy
+			turn++
+			console.log('TURN ', turn)
+		} else {
 			trace("not isBotTurn");
 			return;
 		}
@@ -379,7 +397,6 @@ function StartTurn(param) {
 		} else {
 			SendSwapGem()
 		}
-
 	}, delaySwapGem);
 }
 
@@ -435,15 +452,7 @@ function SendSwapGem(swap) {
 	data.putInt("index1", parseInt(indexSwap[0]));
 	data.putInt("index2", parseInt(indexSwap[1]));
 
-	axios.post(
-		'http://localhost:3001/metadiscs/test',
-		fullData)
-		.then((data) => console.log(data))
-	// baseAPI.postApi('metadiscs', fullData)
-	console.log("Full data to check ", fullData)
-
 	SendExtensionRequest(SWAP_GEM, data);
-
 }
 
 function SwapGem(param) {
@@ -486,19 +495,26 @@ function HandleGems(paramz) {
 
 function HandleHeroes(paramz) {
 	let heroesBotPlayer = paramz.getSFSArray(botPlayer.displayName);
-	console.log("BOT")
 	for (let i = 0; i < botPlayer.heroes.length; i++) {
-		botPlayer.heroes[i].updateHero(heroesBotPlayer.getSFSObject(i));
+		botPlayer.heroes[i].updateHero(heroesBotPlayer.getSFSObject(i), 'BOT');
 	}
 	fullData.bot = botPlayer.heroes
 	// console.log("BOT", botPlayer)
 
 	let heroesEnemyPlayer = paramz.getSFSArray(enemyPlayer.displayName);
-	console.log("ENEMY")
 	for (let i = 0; i < enemyPlayer.heroes.length; i++) {
-		enemyPlayer.heroes[i].updateHero(heroesEnemyPlayer.getSFSObject(i));
+		enemyPlayer.heroes[i].updateHero(heroesEnemyPlayer.getSFSObject(i), 'ENEMY');
 	}
 	fullData.enemy = enemyPlayer.heroes
+	if (isBotTurn()) {
+		pointBot = pointBase
+		pointBase = 0
+		console.log('BOT TURN ', pointBot)
+	} else {
+		pointEnemy = pointBase
+		pointBase = 0
+		console.log('ENEMY TURN ', pointEnemy)
+	}
 	// console.log("ENEMY", enemyPlayer)
 }
 

@@ -140,6 +140,10 @@ function onErrorLogged(event) {
 function onConnection(event) {
 	if (event.success) {
 		trace("Connected to SmartFoxServer 2X!<br>SFS2X API version: " + sfs.version + "<br> IP: " + sfs.config.host);
+		onLoginBtnClick()
+		setTimeout(() => {
+			findGame()
+		}, delayFindGame)
 	}
 	else {
 		trace("Connection failed: " + (event.errorMessage ? event.errorMessage + " (" + event.errorCode + ")" : "Is the server running at all?"));
@@ -354,6 +358,9 @@ function EndGame() {
 	document.getElementById("log").innerHTML =
 		"fullPointBot " + fullPointBot + "   fullPointEnemy " + fullPointEnemy;
 	visualizer.snapShot();
+	setTimeout(() => {
+		findGame()
+	}, delayFindGame)
 }
 
 function SendFinishTurn(isFirstTurn) {

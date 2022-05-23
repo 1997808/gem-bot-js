@@ -365,18 +365,32 @@ function SendFinishTurn(isFirstTurn) {
 	SendExtensionRequest(FINISH_TURN, data);
 }
 
+function SendFullData(win) {
+	fullData.label = Math.floor((pointBot + pointEnemy) * 100) / 100
+	win ? fullData.label += 1 : fullData.label -= 1
+	axios.post(
+		// 'http://103.166.183.138:5000/api/train-data',
+		'http://localhost:5000/api/train-data',
+		fullData)
+		.then((data) => console.log(data))
+	// console.log('hello', fullData)
+}
+
 function StartTurn(param) {
 	setTimeout(function () {
 		visualizer.snapShot();
 		currentPlayerId = param.getInt("currentPlayerId");
+
+		if (botPlayer.isLose()) {
+			SendFullData(true)
+		}
+		if (enemyPlayer.isLose()) {
+			SendFullData(false)
+		}
 		if (isBotTurn()) {
 			if (turn !== 0) {
-				fullData.label = Math.floor((pointBot + pointEnemy) * 100) / 100
-				axios.post(
-					'http://localhost:3001/metadiscs/test',
-					fullData)
-					.then((data) => console.log(data))
-				console.log("Full data to check ", fullData)
+				SendFullData()
+				// console.log("Full data to check ", fullData)
 				console.log('Evaluation ', Math.floor((fullPointBot + fullPointEnemy) * 100) / 100)
 				console.log('Evaluation this turn ', fullData.label)
 			}
@@ -405,8 +419,6 @@ function StartTurn(param) {
 function isBotTurn() {
 	return botPlayer.playerId == currentPlayerId;
 }
-
-
 
 function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTargetAllyOrNot } = {}) {
 	var data = new SFS2X.SFSObject();

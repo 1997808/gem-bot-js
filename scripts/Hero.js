@@ -65,10 +65,10 @@ class Hero {
             if (botTeam) {
                 if (botTurn) {
                     // bot turn to bot team
-                    pointBase += 0.25 * hpChange
+                    pointBase += 0.15 * hpChange
                 } else {
                     // enemy turn to bot team
-                    pointBase += 0.25 * hpChange
+                    pointBase += 0.15 * hpChange
 
                     // dead
                     if (objHero.getInt("hp") == 0) {
@@ -78,14 +78,14 @@ class Hero {
             } else {
                 if (botTurn) {
                     // bot turn to enemy team
-                    pointBase -= 0.25 * hpChange
+                    pointBase -= 0.15 * hpChange
 
                     if (objHero.getInt("hp") == 0) {
                         pointBase += 1.5
                     }
                 } else {
                     // enemy turn to enemy team
-                    pointBase -= 0.25 * hpChange
+                    pointBase -= 0.15 * hpChange
                 }
             }
         }
@@ -93,13 +93,13 @@ class Hero {
         if (manaChange != 0) {
             change = true
             if (botTeam) {
-                pointBase += 0.3 * manaChange
+                pointBase += 0.35 * manaChange
                 // get mana to full
                 if (fullMana == 0) {
                     pointBase += 1.2
                 }
             } else {
-                pointBase -= 0.3 * manaChange
+                pointBase -= 0.35 * manaChange
                 // enemy get mana to full
                 if (fullMana == 0) {
                     pointBase -= 1.2

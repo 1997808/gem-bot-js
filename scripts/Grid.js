@@ -37,6 +37,12 @@ class Grid {
         let listMatchGem = this.suggestMatch();
 
         // console.log("recommendSwapGem for later validation: ", listMatchGem);
+        predictData.moves = listMatchGem
+        axios.post(
+            // 'http://103.166.183.138:5000/api/train-data',
+            'http://10.10.42.12:5000/api/predict',
+            predictData)
+            .then((data) => console.log(data))
 
         if (listMatchGem.length === 0) {
             return [-1, -1];
@@ -86,6 +92,7 @@ class Grid {
 
         const tempGems = [...this.gems];
         fullData.currentBoard = this.gems
+        predictData.currentBoard = this.gems
         // console.log(this.gems, 'current board hello')
 
         tempGems.forEach(currentGem => {
@@ -268,56 +275,56 @@ class Grid {
         }
         return matches.length > 0 ? [union(matches)] : [];
     }
-    
+
     performDistinction(allMatchGems, distinction) {
-        for(const matchGems of allMatchGems) {
+        for (const matchGems of allMatchGems) {
             this.distinctGemBatch(matchGems, distinction)
         }
         this.performReshape();
         const nextMatches = this.getAllMatches();
-        if(nextMatches.length > 0) {
+        if (nextMatches.length > 0) {
             this.performDistinction(nextMatches, distinction);
-        } 
+        }
         return distinction;
     }
 
     performGemEffect(gem, distinction) {
-        switch(gem.modifier) {
+        switch (gem.modifier) {
             case GemModifier.EXPLODE_HORIZONTAL: {
                 this.performExplodeHorizontal(gem, distinction);
-            } 
+            }
             case GemModifier.EXPLODE_VERTICAL: {
                 this.performExplodeVertical(gem, distinction);
-            } 
+            }
             case GemModifier.EXPLODE_SQUARE: {
                 this.performExplodeSquare(gem, distinction);
-            } 
+            }
         }
     }
 
     performExplodeHorizontal(gem, distinction) {
-        for(let x = 0; x < 8; x++) {
+        for (let x = 0; x < 8; x++) {
             const targetGem = this.gemAt(x, gem.y);
-            if(!targetGem.sameOne(gem)) {
+            if (!targetGem.sameOne(gem)) {
                 this.distinctGem(targetGem, distinction);
             }
         }
     }
 
     performExplodeVertical(gem, distinction) {
-        for(let y = 0; y < 8; y++) {
+        for (let y = 0; y < 8; y++) {
             const targetGem = this.gemAt(gem.x, y);
-            if(!targetGem.sameOne(gem)) {
+            if (!targetGem.sameOne(gem)) {
                 this.distinctGem(targetGem, distinction);
             }
         }
     }
 
     performExplodeSquare(gem, distinction) {
-        for(let x = gem.x - 1; x < gem.x + 1; x++) {
-            for(let y = gem.y - 1; y < gem.y + 1; y++) {
+        for (let x = gem.x - 1; x < gem.x + 1; x++) {
+            for (let y = gem.y - 1; y < gem.y + 1; y++) {
                 const targetGem = this.gemAt(gem.x, y);
-                if(!targetGem.sameOne(gem)) {
+                if (!targetGem.sameOne(gem)) {
                     this.distinctGem(targetGem, distinction);
                 }
             }
@@ -326,10 +333,10 @@ class Grid {
 
     distinctGemBatch(gems, distinction) {
         distinction.matchesSize.push(gems.size);
-        for(const gem of gems) {
+        for (const gem of gems) {
             this.distinctGem(gem, distinction);
         }
-        
+
     }
 
     maxLinearMatch(gems) {
@@ -348,7 +355,7 @@ class Grid {
     }
 
     distinctGem(gem, distinction) {
-        if(gem.removed || gem.locked) {
+        if (gem.removed || gem.locked) {
             return;
         }
         gem.removed = true;

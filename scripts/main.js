@@ -50,6 +50,13 @@ var fullData = {
 	label: 0
 };
 
+var predictData = {
+	currentBoard: [],
+	bot: [],
+	enemy: [],
+	moves: [],
+};
+
 const username = "dungxbuif";
 const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzMDM0NjMxNDQyLCJleHAiOjE2NTQ4MzQ2MzF9.sVLkUJU4-1UNswatSxpfdTa3bZxivSIbSwua7qKm195YWwqK6EzSfDa2w0UJvIjgOYl8pY_SXgu-ie0IREmRVg";
 var visualizer = new Visualizer({ el: '#visual' });
@@ -140,10 +147,7 @@ function onErrorLogged(event) {
 function onConnection(event) {
 	if (event.success) {
 		trace("Connected to SmartFoxServer 2X!<br>SFS2X API version: " + sfs.version + "<br> IP: " + sfs.config.host);
-		onLoginBtnClick()
-		setTimeout(() => {
-			findGame()
-		}, delayFindGame)
+		// onLoginBtnClick()
 	}
 	else {
 		trace("Connection failed: " + (event.errorMessage ? event.errorMessage + " (" + event.errorCode + ")" : "Is the server running at all?"));
@@ -405,6 +409,9 @@ function StartTurn(param) {
 			fullPointEnemy += pointEnemy
 			turn++
 			console.log('TURN ', turn)
+
+			predictData.bot = botPlayer.heroes
+			predictData.enemy = enemyPlayer.heroes
 		} else {
 			trace("not isBotTurn");
 			return;
@@ -464,7 +471,6 @@ function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTarge
 
 function SendSwapGem(swap) {
 	let indexSwap = swap ? swap.getIndexSwapGem() : grid.recommendSwapGem();
-
 	// log("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 	trace("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 

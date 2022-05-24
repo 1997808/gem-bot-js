@@ -40,9 +40,9 @@ class Grid {
         predictData.moves = listMatchGem
         axios.post(
             // 'http://103.166.183.138:5000/api/train-data',
-            'http://10.10.42.12:5000/api/predict',
+            'http://localhost:5000/api/predict',
             predictData)
-            .then((data) => console.log(data))
+            .then((data) => console.log(data.data))
 
         if (listMatchGem.length === 0) {
             return [-1, -1];

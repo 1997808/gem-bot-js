@@ -26,7 +26,8 @@ const ENEMY_PLAYER_ID = 0;
 const BOT_PLAYER_ID = 2;
 
 const delaySwapGem = 2000;
-const delayFindGame = 5000;
+const delayFindGame = 4000;
+let delayReload = 70000;
 
 var sfs;
 var room;
@@ -37,6 +38,7 @@ var currentPlayerId;
 var grid;
 
 var turn = 0
+var turnCheckReload = 0
 var pointBase = 0
 var pointBot = 0
 var fullPointBot = 0
@@ -66,6 +68,7 @@ visualizer.start();
 
 // Connect to Game server
 initConnection();
+checkReload()
 
 if (params.username) {
 	document.querySelector('#accountIn').value = params.username;
@@ -112,6 +115,17 @@ function initConnection() {
 	sfs.connect();
 }
 
+function checkReload() {
+	var x = setInterval(function () {
+		delayReload = delayReload - 1000
+		console.log(delayReload)
+		if (delayReload < 0) {
+			clearInterval(x);
+			location.reload();
+		}
+	}, 1000);
+}
+
 function onDisconnectBtClick() {
 	// Log message
 	trace("Disconnecting...");
@@ -147,7 +161,7 @@ function onErrorLogged(event) {
 function onConnection(event) {
 	if (event.success) {
 		trace("Connected to SmartFoxServer 2X!<br>SFS2X API version: " + sfs.version + "<br> IP: " + sfs.config.host);
-		// onLoginBtnClick()
+		onLoginBtnClick()
 	}
 	else {
 		trace("Connection failed: " + (event.errorMessage ? event.errorMessage + " (" + event.errorCode + ")" : "Is the server running at all?"));
@@ -180,8 +194,6 @@ function trace(message, prefix, isDebug) {
 	document.getElementById("log").innerHTML = log;
 	visualizer.log(log);
 }
-
-
 
 function reset() {
 	// Remove SFS2X listeners
@@ -235,6 +247,9 @@ function OnRoomJoin(event) {
 	trace("OnRoomJoin " + event.room.name);
 
 	room = event.room;
+	if (event.room.name == 'lobby') {
+		setTimeout(() => findGame(), delayFindGame)
+	}
 }
 
 function OnRoomJoinError(event) {
@@ -246,6 +261,7 @@ function OnExtensionResponse(event) {
 	let evtParam = event.params;
 	var cmd = event.cmd;
 	trace("OnExtensionResponse " + cmd);
+	delayReload = 70000
 
 	switch (cmd) {
 		case "START_GAME":
@@ -327,7 +343,8 @@ function AssignPlayers(room) {
 
 	let user1 = users[0];
 
-	let playerId1 = Array.from(user1._playerIdByRoomId).map(([name, value]) => (value))[1];
+	let arrPlayerId1 = Array.from(user1._playerIdByRoomId).map(([name, value]) => (value));
+	let playerId1 = arrPlayerId1.length > 1 ? arrPlayerId1[1] : arrPlayerId1[0];
 
 	if (users.length == 1) {
 		if (user1.isItMe) {
@@ -343,7 +360,8 @@ function AssignPlayers(room) {
 
 	let user2 = users[1];
 
-	let playerId2 = Array.from(user2._playerIdByRoomId).map(([name, value]) => (value))[1];
+	let arrPlayerId2 = Array.from(user2._playerIdByRoomId).map(([name, value]) => (value));
+	let playerId2 = arrPlayerId2.length > 1 ? arrPlayerId2[1] : arrPlayerId2[0];
 
 	if (user1.isItMe) {
 		botPlayer = new Player(playerId1, "player" + playerId1);
@@ -363,8 +381,8 @@ function EndGame() {
 		"fullPointBot " + fullPointBot + "   fullPointEnemy " + fullPointEnemy;
 	visualizer.snapShot();
 	setTimeout(() => {
-		findGame()
-	}, delayFindGame)
+		location.reload()
+	}, 2000)
 }
 
 function SendFinishTurn(isFirstTurn) {
@@ -407,20 +425,23 @@ function StartTurn(param) {
 			}
 			fullPointBot += pointBot
 			fullPointEnemy += pointEnemy
-			turn++
-			console.log('TURN ', turn)
 
 			predictData.bot = botPlayer.heroes
 			predictData.enemy = enemyPlayer.heroes
+			turn++
+			console.log('TURN ', turn)
 		} else {
 			trace("not isBotTurn");
 			return;
 		}
 
-		if (strategy) {
-			strategy.playTurn();
-			return;
-		}
+		turnCheckReload++
+		if (delayFindGame)
+
+			if (strategy) {
+				strategy.playTurn();
+				return;
+			}
 		let heroFullMana = botPlayer.anyHeroFullMana();
 		if (heroFullMana != null) {
 			SendCastSkill(heroFullMana)
@@ -471,6 +492,7 @@ function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTarge
 
 function SendSwapGem(swap) {
 	let indexSwap = swap ? swap.getIndexSwapGem() : grid.recommendSwapGem();
+	console.log('room ', room._name)
 	// log("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 	trace("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 

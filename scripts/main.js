@@ -398,7 +398,7 @@ function SendFullData(bonus) {
 	fullData.label = Math.floor((pointBot + pointEnemy + bonus) * 100) / 100
 	axios.post(
 		// 'http://103.166.183.138:5000/api/train-data',
-		'http://localhost:5000/api/train-data',
+		'http://10.10.42.11:5000/api/train-data',
 		fullData)
 		.then((data) => console.log(data))
 	// console.log('hello', fullData)

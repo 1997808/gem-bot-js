@@ -59,8 +59,8 @@ var predictData = {
 	moves: [],
 };
 
-const username = "khanhn2";
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzMDM0NjMxNDQyLCJleHAiOjE2NTQ4MzQ2MzF9.sVLkUJU4-1UNswatSxpfdTa3bZxivSIbSwua7qKm195YWwqK6EzSfDa2w0UJvIjgOYl8pY_SXgu-ie0IREmRVg";
+const username = "dungxbuif2";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ2hpYS50cmFudHJvbmciLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzNDYxMDQ0MjY1LCJleHAiOjE2NTUyNjEwNDR9.WaROZR1sqal1VHYPWih7ZFjvi6ZQhAzfIA6sS9WVXcU9BA-kaVZdMEge8I3OJzKuCLjs3BD71-M27OB4QXcYYA";
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
 var strategy = window.strategy;

@@ -41,8 +41,8 @@ class Grid {
         axios.post(
             // 'http://103.166.183.138:5000/api/train-data',
             'http://10.10.42.11:5000/api/predict',
-            predictData).then(() => {
-                let arr = predict.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
+            predictData).then((data) => {
+                let arr = data.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
                     return parseFloat(item)
                 })
                 console.log(arr)

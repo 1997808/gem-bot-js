@@ -33,16 +33,23 @@ class Grid {
         }
     }
 
-    recommendSwapGem() {
+    async recommendSwapGem() {
         let listMatchGem = this.suggestMatch();
 
         // console.log("recommendSwapGem for later validation: ", listMatchGem);
         predictData.moves = listMatchGem
-        axios.post(
+        const predict = await axios.post(
             // 'http://103.166.183.138:5000/api/train-data',
             'http://localhost:5000/api/predict',
             predictData)
-            .then((data) => console.log(data.data))
+        let arr = predict.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
+            return parseFloat(item)
+        })
+        console.log(arr)
+        const max = Math.max(...arr);
+        console.log('max value ', max)
+        const index = arr.indexOf(max);
+        console.log('best move ', index)
 
         if (listMatchGem.length === 0) {
             return [-1, -1];
@@ -50,24 +57,24 @@ class Grid {
 
         let matchGemSizeThanFour = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
 
-        if (matchGemSizeThanFour) {
-            fullData.matchGem = matchGemSizeThanFour
-            return matchGemSizeThanFour.getIndexSwapGem();
-        }
+        // if (matchGemSizeThanFour) {
+        //     fullData.matchGem = matchGemSizeThanFour
+        //     return matchGemSizeThanFour.getIndexSwapGem();
+        // }
 
         let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
 
-        if (matchGemSizeThanThree) {
-            fullData.matchGem = matchGemSizeThanThree
-            return matchGemSizeThanThree.getIndexSwapGem();
-        }
+        // if (matchGemSizeThanThree) {
+        //     fullData.matchGem = matchGemSizeThanThree
+        //     return matchGemSizeThanThree.getIndexSwapGem();
+        // }
 
         let matchGemSword = listMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
 
-        if (matchGemSword) {
-            fullData.matchGem = matchGemSword
-            return matchGemSword.getIndexSwapGem();
-        }
+        // if (matchGemSword) {
+        //     fullData.matchGem = matchGemSword
+        //     return matchGemSword.getIndexSwapGem();
+        // }
 
         // console.log("myHeroGemType: ", this.myHeroGemType, "| Array.from(this.myHeroGemType)", Array.from(this.myHeroGemType));
 
@@ -75,16 +82,17 @@ class Grid {
         // console.log("matchGem hello: ", matchGemType);
 
 
-        if (matchGemType) {
-            // console.log("matchGemType ");
-            fullData.matchGem = matchGemType
-            return matchGemType.getIndexSwapGem();
-        }
+        // if (matchGemType) {
+        //     // console.log("matchGemType ");
+        //     fullData.matchGem = matchGemType
+        //     return matchGemType.getIndexSwapGem();
+        // }
 
-        fullData.matchGem = listMatchGem[0]
+        fullData.matchGem = listMatchGem[index]
+        console.log(listMatchGem[index].getIndexSwapGem())
         // console.log("listMatchGem[0].getIndexSwapGem() ", listMatchGem[0].getIndexSwapGem());
 
-        return listMatchGem[0].getIndexSwapGem();
+        return listMatchGem[index].getIndexSwapGem();
     }
 
     suggestMatch() {

@@ -72,7 +72,7 @@ class Hero {
 
                     // dead
                     if (objHero.getInt("hp") == 0) {
-                        pointBase -= 1.5
+                        pointBase -= 2
                     }
                 }
             } else {
@@ -81,7 +81,7 @@ class Hero {
                     pointBase -= 0.15 * hpChange
 
                     if (objHero.getInt("hp") == 0) {
-                        pointBase += 1.5
+                        pointBase += 2
                     }
                 } else {
                     // enemy turn to enemy team

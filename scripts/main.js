@@ -59,7 +59,7 @@ var predictData = {
 	moves: [],
 };
 
-const username = "dungxbuif";
+const username = "khanhn2";
 const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzMDM0NjMxNDQyLCJleHAiOjE2NTQ4MzQ2MzF9.sVLkUJU4-1UNswatSxpfdTa3bZxivSIbSwua7qKm195YWwqK6EzSfDa2w0UJvIjgOYl8pY_SXgu-ie0IREmRVg";
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
@@ -394,9 +394,8 @@ function SendFinishTurn(isFirstTurn) {
 	SendExtensionRequest(FINISH_TURN, data);
 }
 
-function SendFullData(win) {
-	fullData.label = Math.floor((pointBot + pointEnemy) * 100) / 100
-	win ? fullData.label += 1 : fullData.label -= 1
+function SendFullData(bonus) {
+	fullData.label = Math.floor((pointBot + pointEnemy + bonus) * 100) / 100
 	axios.post(
 		// 'http://103.166.183.138:5000/api/train-data',
 		'http://localhost:5000/api/train-data',
@@ -411,14 +410,14 @@ function StartTurn(param) {
 		currentPlayerId = param.getInt("currentPlayerId");
 
 		if (botPlayer.isLose()) {
-			SendFullData(true)
+			SendFullData(-10)
 		}
 		if (enemyPlayer.isLose()) {
-			SendFullData(false)
+			SendFullData(10)
 		}
 		if (isBotTurn()) {
 			if (turn !== 0) {
-				SendFullData()
+				SendFullData(0)
 				// console.log("Full data to check ", fullData)
 				console.log('Evaluation ', Math.floor((fullPointBot + fullPointEnemy) * 100) / 100)
 				console.log('Evaluation this turn ', fullData.label)
@@ -490,9 +489,9 @@ function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTarge
 
 }
 
-function SendSwapGem(swap) {
-	let indexSwap = swap ? swap.getIndexSwapGem() : grid.recommendSwapGem();
-	console.log('room ', room._name)
+async function SendSwapGem(swap) {
+	let indexSwap = swap ? swap.getIndexSwapGem() : await grid.recommendSwapGem();
+	console.log('room ', indexSwap)
 	// log("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 	trace("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 

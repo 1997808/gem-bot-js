@@ -59,8 +59,8 @@ var predictData = {
 	moves: [],
 };
 
-const username = "khanhn2";
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzMDM0NjMxNDQyLCJleHAiOjE2NTQ4MzQ2MzF9.sVLkUJU4-1UNswatSxpfdTa3bZxivSIbSwua7qKm195YWwqK6EzSfDa2w0UJvIjgOYl8pY_SXgu-ie0IREmRVg";
+const username = "dungxbuif3";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJodW5nLnBoYW50cnVuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJMQVNUX0xPR0lOX1RJTUUiOjE2NTM0NjY0MzU1MjEsImV4cCI6MTY1NTI2NjQzNX0.SD17IOYxixVtKRA7n_3Vc-3uEjef7QSgbm6dALGoAnxsTjxFs-hv334CZ1iYlc17GTz3E0tRv7eicA9aYsAQ4Q";
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
 var strategy = window.strategy;
@@ -398,7 +398,7 @@ function SendFullData(bonus) {
 	fullData.label = Math.floor((pointBot + pointEnemy + bonus) * 100) / 100
 	axios.post(
 		// 'http://103.166.183.138:5000/api/train-data',
-		'http://localhost:5000/api/train-data',
+		'http://10.10.42.11:5000/api/train-data',
 		fullData)
 		.then((data) => console.log(data))
 	// console.log('hello', fullData)

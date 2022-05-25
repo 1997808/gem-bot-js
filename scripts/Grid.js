@@ -40,7 +40,7 @@ class Grid {
         predictData.moves = listMatchGem
         const predict = await axios.post(
             // 'http://103.166.183.138:5000/api/train-data',
-            'http://localhost:5000/api/predict',
+            'http://10.10.42.11:5000/api/predict',
             predictData)
         let arr = predict.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
             return parseFloat(item)

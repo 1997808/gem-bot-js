@@ -33,25 +33,23 @@ class Grid {
         }
     }
 
-    recommendSwapGem() {
+    async recommendSwapGem() {
         let listMatchGem = this.suggestMatch();
 
         // console.log("recommendSwapGem for later validation: ", listMatchGem);
         predictData.moves = listMatchGem
-        axios.post(
-            // 'http://103.166.183.138:5000/api/train-data',
-            'http://localhost:5000/api/predict',
-            predictData).then((data) => {
-                let arr = data.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
-                    return parseFloat(item)
-                })
-                console.log(arr)
-                const max = Math.max(...arr);
-                console.log('max value ', max)
-                const index = arr.indexOf(max);
-                console.log('best move ', index)
-                return listMatchGem[index].getIndexSwapGem();
-            })
+        const predict = await axios.post(
+            'http://103.166.183.138:5000/api/predict',
+            // 'http://localhost:5000/api/predict',
+            predictData)
+
+        let arr = predict.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
+            return parseFloat(item)
+        })
+        const max = Math.max(...arr);
+        const index = arr.indexOf(max);
+        fullData.matchGem = listMatchGem[index]
+        return listMatchGem[index].getIndexSwapGem();
 
         if (listMatchGem.length === 0) {
             return [-1, -1];

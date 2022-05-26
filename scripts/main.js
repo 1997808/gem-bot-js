@@ -380,9 +380,9 @@ function EndGame() {
 	document.getElementById("log").innerHTML =
 		"fullPointBot " + fullPointBot + "   fullPointEnemy " + fullPointEnemy;
 	visualizer.snapShot();
-	// setTimeout(() => {
-	// 	location.reload()
-	// }, 2000)
+	setTimeout(() => {
+		location.reload()
+	}, 2000)
 }
 
 function SendFinishTurn(isFirstTurn) {

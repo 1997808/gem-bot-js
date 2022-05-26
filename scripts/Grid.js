@@ -61,11 +61,11 @@ class Grid {
             return [-1, -1];
         }
 
-        let matchGemSizeThanFour = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
+        let newMatchGemSizeThanFour = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
 
-        if (matchGemSizeThanFour) {
-            fullData.matchGem = matchGemSizeThanFour
-            return matchGemSizeThanFour.getIndexSwapGem();
+        if (newMatchGemSizeThanFour) {
+            fullData.matchGem = newMatchGemSizeThanFour
+            return newMatchGemSizeThanFour.getIndexSwapGem();
         }
 
         // let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
@@ -75,27 +75,23 @@ class Grid {
         //     return matchGemSizeThanThree.getIndexSwapGem();
         // }
 
-        // let matchGemSword = listMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
+        // let newMatchGemSword = newListMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
 
-        // if (matchGemSword) {
-        //     fullData.matchGem = matchGemSword
-        //     return matchGemSword.getIndexSwapGem();
+        // if (newMatchGemSword) {
+        //     fullData.matchGem = newMatchGemSword
+        //     return newMatchGemSword.getIndexSwapGem();
         // }
 
         // console.log("myHeroGemType: ", this.myHeroGemType, "| Array.from(this.myHeroGemType)", Array.from(this.myHeroGemType));
 
-        // let matchGemType = newListMatchGem.find(gemMatch => Array.from(this.myHeroGemType).includes(gemMatch.type));
+        let newMatchGemType = newListMatchGem.find(gemMatch => Array.from(this.myHeroGemType).includes(gemMatch.type));
         // console.log("matchGem hello: ", matchGemType);
 
-        // if (matchGemType) {
-        //     // console.log("matchGemType ");
-        //     fullData.matchGem = matchGemType
-        //     return matchGemType.getIndexSwapGem();
-        // }
-
-        // fullData.matchGem = listMatchGem[index]
-        // console.log(listMatchGem[index].getIndexSwapGem())
-        // console.log("listMatchGem[0].getIndexSwapGem() ", listMatchGem[0].getIndexSwapGem());
+        if (newMatchGemType) {
+            // console.log("newMatchGemType ");
+            fullData.matchGem = newMatchGemType
+            return newMatchGemType.getIndexSwapGem();
+        }
 
         fullData.matchGem = listMatchGem[index]
         return listMatchGem[index].getIndexSwapGem();

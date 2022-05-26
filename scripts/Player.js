@@ -47,8 +47,8 @@ class Player {
     getRecommendGemType() {
         this.heroGemType = new Set();
 
-        for (let i = 0; i < this.heroes.length; i++) {
-            let hero = this.heroes[i];
+        for (let i = 0; i < this.getHerosAlive().length; i++) {
+            let hero = this.getHerosAlive()[i];
 
             for (let j = 0; j < hero.gemTypes.length; j++) {
                 let gt = hero.gemTypes[j];
@@ -56,6 +56,7 @@ class Player {
             }
         }
 
+        this.heroGemType.add(GemType.SWORD)
         return this.heroGemType;
     }
 

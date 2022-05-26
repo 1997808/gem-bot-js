@@ -36,7 +36,7 @@ class Grid {
     async recommendSwapGem() {
         let listMatchGem = this.suggestMatch();
 
-        // console.log("recommendSwapGem for later validation: ", listMatchGem);
+        console.log("recommendSwapGem ", listMatchGem);
         predictData.moves = listMatchGem
         const predict = await axios.post(
             'http://103.166.183.138:5000/api/predict',
@@ -46,7 +46,6 @@ class Grid {
         let arr = predict.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
             return parseFloat(item)
         })
-        console.log(arr)
         const max = Math.max(...arr);
         const index = arr.indexOf(max);
         fullData.matchGem = listMatchGem[index]

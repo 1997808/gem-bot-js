@@ -46,9 +46,11 @@ class Grid {
         let arr = predict.data.data.replaceAll('[', '').replaceAll(']', '').split(',').map((item) => {
             return parseFloat(item)
         })
+        console.log(arr)
         const max = Math.max(...arr);
         const index = arr.indexOf(max);
         fullData.matchGem = listMatchGem[index]
+        console.log('move choose ', listMatchGem[index])
         return listMatchGem[index].getIndexSwapGem();
 
         if (listMatchGem.length === 0) {

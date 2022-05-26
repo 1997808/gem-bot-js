@@ -59,7 +59,7 @@ var predictData = {
 	moves: [],
 };
 
-const username = "dungxbuif2";
+const username = "khanhn2";
 const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ2hpYS50cmFudHJvbmciLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzNDYxMDQ0MjY1LCJleHAiOjE2NTUyNjEwNDR9.WaROZR1sqal1VHYPWih7ZFjvi6ZQhAzfIA6sS9WVXcU9BA-kaVZdMEge8I3OJzKuCLjs3BD71-M27OB4QXcYYA";
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
@@ -117,13 +117,13 @@ function initConnection() {
 
 function checkReload() {
 	var x = setInterval(function () {
-		delayReload = delayReload - 1000
+		delayReload = delayReload - 5000
 		console.log(delayReload)
 		if (delayReload < 0) {
 			clearInterval(x);
 			location.reload();
 		}
-	}, 1000);
+	}, 5000);
 }
 
 function onDisconnectBtClick() {
@@ -400,8 +400,6 @@ function SendFullData(bonus) {
 		'http://103.166.183.138:5000/api/train-data',
 		// 'http://localhost:5000/api/train-data',
 		fullData)
-		.then((data) => console.log(data))
-	// console.log('hello', fullData)
 }
 
 function StartTurn(param) {
@@ -431,11 +429,6 @@ function StartTurn(param) {
 			console.log('TURN ', turn)
 		} else {
 			trace("not isBotTurn");
-			return;
-		}
-
-		if (strategy) {
-			strategy.playTurn();
 			return;
 		}
 
@@ -489,7 +482,6 @@ function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTarge
 
 async function SendSwapGem(swap) {
 	let indexSwap = swap ? swap.getIndexSwapGem() : await grid.recommendSwapGem();
-	console.log('best move ', indexSwap)
 	// log("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 	trace("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 

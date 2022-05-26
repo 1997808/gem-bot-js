@@ -397,8 +397,8 @@ function SendFinishTurn(isFirstTurn) {
 function SendFullData(bonus) {
 	fullData.label = Math.floor((pointBot + pointEnemy + bonus) * 100) / 100
 	axios.post(
-		// 'http://103.166.183.138:5000/api/train-data',
-		'http://10.10.42.11:5000/api/train-data',
+		'http://103.166.183.138:5000/api/train-data',
+		// 'http://localhost:5000/api/train-data',
 		fullData)
 		.then((data) => console.log(data))
 	// console.log('hello', fullData)
@@ -434,13 +434,11 @@ function StartTurn(param) {
 			return;
 		}
 
-		turnCheckReload++
-		if (delayFindGame)
+		if (strategy) {
+			strategy.playTurn();
+			return;
+		}
 
-			if (strategy) {
-				strategy.playTurn();
-				return;
-			}
 		let heroFullMana = botPlayer.anyHeroFullMana();
 		if (heroFullMana != null) {
 			SendCastSkill(heroFullMana)
@@ -489,9 +487,9 @@ function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTarge
 
 }
 
-function SendSwapGem(swap) {
-	let indexSwap = swap ? swap.getIndexSwapGem() : grid.recommendSwapGem();
-	console.log('room ', indexSwap)
+async function SendSwapGem(swap) {
+	let indexSwap = swap ? swap.getIndexSwapGem() : await grid.recommendSwapGem();
+	console.log('best move ', indexSwap)
 	// log("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 	trace("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
 

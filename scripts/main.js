@@ -59,8 +59,8 @@ var predictData = {
 	moves: [],
 };
 
-const username = "khanhn6";
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJodW5nLnBoYW50cnVuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJMQVNUX0xPR0lOX1RJTUUiOjE2NTM0NjY0MzU1MjEsImV4cCI6MTY1NTI2NjQzNX0.SD17IOYxixVtKRA7n_3Vc-3uEjef7QSgbm6dALGoAnxsTjxFs-hv334CZ1iYlc17GTz3E0tRv7eicA9aYsAQ4Q";
+const username = "khanhn3";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoaWV1LnRyYW50cnVuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJMQVNUX0xPR0lOX1RJTUUiOjE2NTM0NjUxODM1MjEsImV4cCI6MTY1NTI2NTE4M30.y2xlLXAzqdY9UdxXxIgY0km3rBnhz_1E_ExNC4cQZew-9NJ_rBCmMEAQD0iCuKG8V-C-H2ykA8nlUhODCFR5Ag";
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
 var strategy = window.strategy;
@@ -380,9 +380,9 @@ function EndGame() {
 	document.getElementById("log").innerHTML =
 		"fullPointBot " + fullPointBot + "   fullPointEnemy " + fullPointEnemy;
 	visualizer.snapShot();
-	setTimeout(() => {
-		location.reload()
-	}, 2000)
+	// setTimeout(() => {
+	// 	location.reload()
+	// }, 2000)
 }
 
 function SendFinishTurn(isFirstTurn) {
@@ -418,7 +418,7 @@ function StartTurn(param) {
 				SendFullData(0)
 				// console.log("Full data to check ", fullData)
 				console.log('Evaluation ', Math.floor((fullPointBot + fullPointEnemy) * 100) / 100)
-				console.log('Evaluation this turn ', fullData.label)
+				// console.log('Evaluation this turn ', fullData.label)
 			}
 			fullPointBot += pointBot
 			fullPointEnemy += pointEnemy
@@ -432,13 +432,78 @@ function StartTurn(param) {
 			return;
 		}
 
-		let heroFullMana = botPlayer.anyHeroFullMana();
-		if (heroFullMana != null) {
-			SendCastSkill(heroFullMana)
-		} else {
+		let skill = false;
+		// let heroFullMana = botPlayer.anyHeroFullMana();
+
+		//console.log('check hero 1 skill ', botPlayer.heroes[0]) //MONK
+		//console.log('check hero 2 skill ', botPlayer.heroes[1]) //CERBERUS
+		//console.log('check hero 3 skill ', botPlayer.heroes[2]) //666
+
+		if (botPlayer.heroes[0].isAlive() && botPlayer.heroes[0].isFullMana() && !skill) {
+			if (botPlayer.heroes[0].attack < 10 || botPlayer.heroes[1].attack < 10 || botPlayer.heroes[2].attack < 10) {
+				SendCastSkill(botPlayer.heroes[0])
+				skill = true
+			}
+		}
+
+		if (botPlayer.heroes[1].isAlive() && botPlayer.heroes[1].isFullMana() && !skill) {
+			SendCastSkill(botPlayer.heroes[1])
+			skill = true
+		}
+
+		if (botPlayer.heroes[2].isAlive() && botPlayer.heroes[2].isFullMana() && !skill) {
+			let targetId = getImportantTarget(enemyPlayer)
+			SendCastSkill(botPlayer.heroes[2], { targetId })
+			skill = true
+		}
+
+		if (!skill) {
 			SendSwapGem()
 		}
 	}, delaySwapGem);
+}
+
+function getImportantTarget(enemy) {
+	// let enemyLine = [enemy.heroes[0].id, enemy.heroes[1].id, enemy.heroes[2].id]
+	let enemy1 = enemy.heroes[0]
+	let enemy2 = enemy.heroes[1]
+	let enemy3 = enemy.heroes[2]
+	let target1 = ['THUNDER_GOD', 'MERMAID', 'CERBERUS', 'SEA_GOD']
+	let target2 = ['FIRE_SPIRIT', 'AIR_SPIRIT', 'DISPATER', 'FATE']
+	let target3 = ['MONK', 'SEA_SPIRIT', 'ELIZAH', 'SKELETON']
+
+	let defaultTarget = enemy.firstHeroAlive().id.toString()
+	if (enemy1.isAlive() && target1.indexOf(enemy1.id) != -1) {
+		return enemy1.id.toString()
+	}
+	if (enemy2.isAlive() && target1.indexOf(enemy2.id) != -1) {
+		return enemy2.id.toString()
+	}
+	if (enemy3.isAlive() && target1.indexOf(enemy3.id) != -1) {
+		return enemy3.id.toString()
+	}
+
+	if (enemy1.isAlive() && target2.indexOf(enemy1.id) != -1) {
+		return enemy1.id.toString()
+	}
+	if (enemy2.isAlive() && target2.indexOf(enemy2.id) != -1) {
+		return enemy2.id.toString()
+	}
+	if (enemy3.isAlive() && target2.indexOf(enemy3.id) != -1) {
+		return enemy3.id.toString()
+	}
+
+	if (enemy1.isAlive() && target3.indexOf(enemy1.id) != -1) {
+		return enemy1.id.toString()
+	}
+	if (enemy2.isAlive() && target3.indexOf(enemy2.id) != -1) {
+		return enemy2.id.toString()
+	}
+	if (enemy3.isAlive() && target3.indexOf(enemy3.id) != -1) {
+		return enemy3.id.toString()
+	}
+
+	return defaultTarget
 }
 
 function isBotTurn() {
@@ -553,7 +618,6 @@ function HandleHeroes(paramz) {
 		pointBase = 0
 		console.log('ENEMY TURN ', pointEnemy)
 	}
-	// console.log("ENEMY", enemyPlayer)
 }
 
 

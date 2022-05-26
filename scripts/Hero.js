@@ -9,6 +9,7 @@ const HeroIdEnum = {
     CERBERUS: 7, //Cerberus deal dame = attack + increase self attack
     DISPATER: 8, //Fate
     ELIZAH: 9, // ELIZAH
+
     TALOS: 10,
     MONKEY: 11,
     GUTS: 12,

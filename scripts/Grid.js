@@ -36,7 +36,7 @@ class Grid {
     async recommendSwapGem() {
         let listMatchGem = this.suggestMatch();
 
-        console.log("recommendSwapGem ", listMatchGem);
+        // console.log("recommendSwapGem ", listMatchGem);
         predictData.moves = listMatchGem
         const predict = await axios.post(
             'http://103.166.183.138:5000/api/predict',
@@ -47,53 +47,58 @@ class Grid {
             return parseFloat(item)
         })
         const max = Math.max(...arr);
-        const index = arr.indexOf(max);
-        fullData.matchGem = listMatchGem[index]
-        console.log('move choose ', listMatchGem[index])
-        return listMatchGem[index].getIndexSwapGem();
+        let newListMatchGem = [];
+        let index = arr.indexOf(max);
+        console.log('max value ', max)
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] == max) {
+                newListMatchGem.push(listMatchGem[i])
+            }
+        }
+        // return listMatchGem[index].getIndexSwapGem();
 
-        if (listMatchGem.length === 0) {
+        if (newListMatchGem.length === 0) {
             return [-1, -1];
         }
 
-        let matchGemSizeThanFour = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
+        let matchGemSizeThanFour = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
 
         if (matchGemSizeThanFour) {
             fullData.matchGem = matchGemSizeThanFour
             return matchGemSizeThanFour.getIndexSwapGem();
         }
 
-        let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
+        // let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
 
-        if (matchGemSizeThanThree) {
-            fullData.matchGem = matchGemSizeThanThree
-            return matchGemSizeThanThree.getIndexSwapGem();
-        }
+        // if (matchGemSizeThanThree) {
+        //     fullData.matchGem = matchGemSizeThanThree
+        //     return matchGemSizeThanThree.getIndexSwapGem();
+        // }
 
-        let matchGemSword = listMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
+        // let matchGemSword = listMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
 
-        if (matchGemSword) {
-            fullData.matchGem = matchGemSword
-            return matchGemSword.getIndexSwapGem();
-        }
+        // if (matchGemSword) {
+        //     fullData.matchGem = matchGemSword
+        //     return matchGemSword.getIndexSwapGem();
+        // }
 
         // console.log("myHeroGemType: ", this.myHeroGemType, "| Array.from(this.myHeroGemType)", Array.from(this.myHeroGemType));
 
-        let matchGemType = listMatchGem.find(gemMatch => Array.from(this.myHeroGemType).includes(gemMatch.type));
+        // let matchGemType = newListMatchGem.find(gemMatch => Array.from(this.myHeroGemType).includes(gemMatch.type));
         // console.log("matchGem hello: ", matchGemType);
 
+        // if (matchGemType) {
+        //     // console.log("matchGemType ");
+        //     fullData.matchGem = matchGemType
+        //     return matchGemType.getIndexSwapGem();
+        // }
 
-        if (matchGemType) {
-            // console.log("matchGemType ");
-            fullData.matchGem = matchGemType
-            return matchGemType.getIndexSwapGem();
-        }
-
-        fullData.matchGem = listMatchGem[index]
-        console.log(listMatchGem[index].getIndexSwapGem())
+        // fullData.matchGem = listMatchGem[index]
+        // console.log(listMatchGem[index].getIndexSwapGem())
         // console.log("listMatchGem[0].getIndexSwapGem() ", listMatchGem[0].getIndexSwapGem());
 
-        return listMatchGem[0].getIndexSwapGem();
+        fullData.matchGem = listMatchGem[index]
+        return listMatchGem[index].getIndexSwapGem();
     }
 
     suggestMatch() {

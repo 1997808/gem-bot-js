@@ -1,7 +1,5 @@
-class Player
-{
-    constructor(playerId, name)
-    {
+class Player {
+    constructor(playerId, name) {
         this.signature = Math.random();
         this.playerId = playerId;
         this.displayName = name;
@@ -17,7 +15,7 @@ class Player
     getHerosAlive() {
         return this.heroes.filter(hero => hero.isAlive());
     }
-    
+
 
     getCastableHeros() {
         let arr = this.heroes.filter(hero => hero.isAlive() && hero.isFullMana());
@@ -49,14 +47,14 @@ class Player
     getRecommendGemType() {
         this.heroGemType = new Set();
 
-        for (let i = 0; i < this.heroes.length; i++){
+        for (let i = 0; i < this.heroes.length; i++) {
             let hero = this.heroes[i];
 
-            for (let j = 0; j < hero.gemTypes.length; j++){
+            for (let j = 0; j < hero.gemTypes.length; j++) {
                 let gt = hero.gemTypes[j];
                 this.heroGemType.add(GemType[gt]);
             }
-        }        
+        }
 
         return this.heroGemType;
     }

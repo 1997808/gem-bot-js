@@ -506,6 +506,49 @@ function getImportantTarget(enemy) {
 	return defaultTarget
 }
 
+function getImportantAllies(bot) {
+	// let enemyLine = [enemy.heroes[0].id, enemy.heroes[1].id, enemy.heroes[2].id]
+	let bot1 = bot.heroes[0]
+	let bot2 = bot.heroes[1]
+	let bot3 = bot.heroes[2]
+	let target1 = ['THUNDER_GOD', 'MERMAID', 'CERBERUS', 'SEA_GOD']
+	let target2 = ['FIRE_SPIRIT', 'AIR_SPIRIT', 'DISPATER', 'FATE']
+	let target3 = ['MONK', 'SEA_SPIRIT', 'ELIZAH', 'SKELETON']
+
+	let defaultTarget = bot.firstHeroAlive().id.toString()
+	if (bot1.isAlive() && target1.indexOf(bot1.id) != -1) {
+		return bot1.id.toString()
+	}
+	if (bot2.isAlive() && target1.indexOf(bot2.id) != -1) {
+		return bot2.id.toString()
+	}
+	if (bot3.isAlive() && target1.indexOf(bot3.id) != -1) {
+		return bot3.id.toString()
+	}
+
+	if (bot1.isAlive() && target2.indexOf(bot1.id) != -1) {
+		return bot1.id.toString()
+	}
+	if (bot2.isAlive() && target2.indexOf(bot2.id) != -1) {
+		return bot2.id.toString()
+	}
+	if (bot3.isAlive() && target2.indexOf(bot3.id) != -1) {
+		return bot3.id.toString()
+	}
+
+	if (bot1.isAlive() && target3.indexOf(bot1.id) != -1) {
+		return bot1.id.toString()
+	}
+	if (bot2.isAlive() && target3.indexOf(bot2.id) != -1) {
+		return bot2.id.toString()
+	}
+	if (bot3.isAlive() && target3.indexOf(bot3.id) != -1) {
+		return bot3.id.toString()
+	}
+
+	return defaultTarget
+}
+
 function isBotTurn() {
 	return botPlayer.playerId == currentPlayerId;
 }
@@ -517,9 +560,9 @@ function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTarge
 	if (targetId) {
 		data.putUtfString("targetId", targetId);
 	} else if (heroCastSkill.isHeroSelfSkill()) {
-		data.putUtfString("targetId", botPlayer.firstHeroAlive().id.toString());
+		data.putUtfString("targetId", getImportantAllies(botPlayer));
 	} else {
-		data.putUtfString("targetId", enemyPlayer.firstHeroAlive().id.toString());
+		data.putUtfString("targetId", getImportantTarget(enemyPlayer));
 	}
 	console.log("selectedGem:  ", SelectGem());
 	if (selectedGem) {

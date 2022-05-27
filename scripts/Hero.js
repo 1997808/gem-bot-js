@@ -55,8 +55,10 @@ class Hero {
         if (attackChange != 0) {
             change = true
             if (botTeam) {
+                // ally get more attack
                 pointBase += 0.1 * attackChange
             } else {
+                // enemy get more attack
                 pointBase -= 0.1 * attackChange
             }
         }

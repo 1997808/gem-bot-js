@@ -27,7 +27,7 @@ const BOT_PLAYER_ID = 2;
 
 const delaySwapGem = 2000;
 const delayFindGame = 4000;
-let delayReload = 70000;
+// let delayReload = 70000;
 
 var sfs;
 var room;
@@ -59,8 +59,9 @@ var predictData = {
 	moves: [],
 };
 
-const username = "khanhn3";
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoaWV1LnRyYW50cnVuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJMQVNUX0xPR0lOX1RJTUUiOjE2NTM0NjUxODM1MjEsImV4cCI6MTY1NTI2NTE4M30.y2xlLXAzqdY9UdxXxIgY0km3rBnhz_1E_ExNC4cQZew-9NJ_rBCmMEAQD0iCuKG8V-C-H2ykA8nlUhODCFR5Ag";
+const username = "Minimax";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzNjM1NTU4NjA2LCJleHAiOjE2NTU0MzU1NTh9.a0t9pnbUXepvA2wkiiHLMRnxfeAs_E1Azw1uQYBSZ6W91oO9s4rW0SxHVZ-Q-HjXkYRcv-hLA0tOuUVBI6jbmg";
+
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
 var strategy = window.strategy;
@@ -68,7 +69,7 @@ visualizer.start();
 
 // Connect to Game server
 initConnection();
-checkReload()
+// checkReload()
 
 if (params.username) {
 	document.querySelector('#accountIn').value = params.username;
@@ -115,16 +116,16 @@ function initConnection() {
 	sfs.connect();
 }
 
-function checkReload() {
-	var x = setInterval(function () {
-		delayReload = delayReload - 5000
-		console.log(delayReload)
-		if (delayReload < 0) {
-			clearInterval(x);
-			location.reload();
-		}
-	}, 5000);
-}
+// function checkReload() {
+// 	var x = setInterval(function () {
+// 		delayReload = delayReload - 5000
+// 		console.log(delayReload)
+// 		if (delayReload < 0) {
+// 			clearInterval(x);
+// 			location.reload();
+// 		}
+// 	}, 5000);
+// }
 
 function onDisconnectBtClick() {
 	// Log message
@@ -247,9 +248,9 @@ function OnRoomJoin(event) {
 	trace("OnRoomJoin " + event.room.name);
 
 	room = event.room;
-	if (event.room.name == 'lobby') {
-		setTimeout(() => findGame(), delayFindGame)
-	}
+	// if (event.room.name == 'lobby') {
+	// 	setTimeout(() => findGame(), delayFindGame)
+	// }
 }
 
 function OnRoomJoinError(event) {
@@ -261,7 +262,7 @@ function OnExtensionResponse(event) {
 	let evtParam = event.params;
 	var cmd = event.cmd;
 	trace("OnExtensionResponse " + cmd);
-	delayReload = 70000
+	// delayReload = 70000
 
 	switch (cmd) {
 		case "START_GAME":
@@ -380,9 +381,9 @@ function EndGame() {
 	document.getElementById("log").innerHTML =
 		"fullPointBot " + fullPointBot + "   fullPointEnemy " + fullPointEnemy;
 	visualizer.snapShot();
-	setTimeout(() => {
-		location.reload()
-	}, 2000)
+	// setTimeout(() => {
+	// 	location.reload()
+	// }, 2000)
 }
 
 function SendFinishTurn(isFirstTurn) {
@@ -433,11 +434,6 @@ function StartTurn(param) {
 		}
 
 		let skill = false;
-		// let heroFullMana = botPlayer.anyHeroFullMana();
-
-		//console.log('check hero 1 skill ', botPlayer.heroes[0]) //MONK
-		//console.log('check hero 2 skill ', botPlayer.heroes[1]) //CERBERUS
-		//console.log('check hero 3 skill ', botPlayer.heroes[2]) //666
 
 		if (botPlayer.heroes[0].isAlive() && botPlayer.heroes[0].isFullMana() && !skill) {
 			if (botPlayer.heroes[0].attack < 10 || botPlayer.heroes[1].attack < 10 || botPlayer.heroes[2].attack < 10) {

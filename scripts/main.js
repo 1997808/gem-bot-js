@@ -25,7 +25,7 @@ const BOT_PLAYER_ID = 2;
 
 const delaySwapGem = 2000;
 const delayFindGame = 4000;
-// let delayReload = 70000;
+let delayReload = 30000;
 
 var sfs;
 var room;
@@ -64,8 +64,8 @@ var predictData = {
 	moves: [],
 };
 
-const username = "Minimax";
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzNjM1NTU4NjA2LCJleHAiOjE2NTU0MzU1NTh9.a0t9pnbUXepvA2wkiiHLMRnxfeAs_E1Azw1uQYBSZ6W91oO9s4rW0SxHVZ-Q-HjXkYRcv-hLA0tOuUVBI6jbmg";
+const username = "khanhn4";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaC5sZWR1eTEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiTEFTVF9MT0dJTl9USU1FIjoxNjUzNTA0NzcyNDQ1LCJleHAiOjE2NTUzMDQ3NzJ9.8wZ27lQl2NLl17Q2o-nNeypP5eQnIv-ERDIO0uiQAu5f7z_a9ZZIgZe7WJet5gpL26xdrJo-VZNOgWTV8TCb6g";
 
 var visualizer = new Visualizer({ el: '#visual' });
 var params = window.params;
@@ -121,16 +121,16 @@ function initConnection() {
 	sfs.connect();
 }
 
-// function checkReload() {
-// 	var x = setInterval(function () {
-// 		delayReload = delayReload - 5000
-// 		console.log(delayReload)
-// 		if (delayReload < 0) {
-// 			clearInterval(x);
-// 			location.reload();
-// 		}
-// 	}, 5000);
-// }
+function checkReload() {
+	var x = setInterval(function () {
+		delayReload = delayReload - 5000
+		console.log(delayReload)
+		if (delayReload < 0) {
+			clearInterval(x);
+			location.reload();
+		}
+	}, 5000);
+}
 
 function onDisconnectBtClick() {
 	// Log message
@@ -253,9 +253,9 @@ function OnRoomJoin(event) {
 	trace("OnRoomJoin " + event.room.name);
 
 	room = event.room;
-	// if (event.room.name == 'lobby') {
-	// 	setTimeout(() => findGame(), delayFindGame)
-	// }
+	if (event.room.name == 'lobby') {
+		setTimeout(() => findGame(), delayFindGame)
+	}
 }
 
 function OnRoomJoinError(event) {
@@ -267,7 +267,7 @@ function OnExtensionResponse(event) {
 	let evtParam = event.params;
 	var cmd = event.cmd;
 	trace("OnExtensionResponse " + cmd);
-	// delayReload = 70000
+	delayReload = 30000
 
 	switch (cmd) {
 		case "START_GAME":

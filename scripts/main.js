@@ -74,7 +74,7 @@ visualizer.start();
 
 // Connect to Game server
 initConnection();
-// checkReload()
+checkReload()
 
 if (params.username) {
 	document.querySelector('#accountIn').value = params.username;

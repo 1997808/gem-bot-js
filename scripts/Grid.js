@@ -61,12 +61,12 @@ class Grid {
             return [-1, -1];
         }
 
-        let newMatchGemSizeThanFour = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
+        // let newMatchGemSizeThanFour = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
 
-        if (newMatchGemSizeThanFour) {
-            fullData.matchGem = newMatchGemSizeThanFour
-            return newMatchGemSizeThanFour.getIndexSwapGem();
-        }
+        // if (newMatchGemSizeThanFour) {
+        //     fullData.matchGem = newMatchGemSizeThanFour
+        //     return newMatchGemSizeThanFour.getIndexSwapGem();
+        // }
 
         // let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
 

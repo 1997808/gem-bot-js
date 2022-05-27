@@ -49,6 +49,9 @@ class Player {
 
         for (let i = 0; i < this.getHerosAlive().length; i++) {
             let hero = this.getHerosAlive()[i];
+            if (hero.isFullMana()) {
+                continue;
+            }
 
             for (let j = 0; j < hero.gemTypes.length; j++) {
                 let gt = hero.gemTypes[j];

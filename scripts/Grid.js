@@ -61,12 +61,19 @@ class Grid {
             return [-1, -1];
         }
 
-        // let newMatchGemSizeThanFour = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
+        let newMatchGemSizeThanFour = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
 
-        // if (newMatchGemSizeThanFour) {
-        //     fullData.matchGem = newMatchGemSizeThanFour
-        //     return newMatchGemSizeThanFour.getIndexSwapGem();
-        // }
+        if (newMatchGemSizeThanFour) {
+            fullData.matchGem = newMatchGemSizeThanFour
+            return newMatchGemSizeThanFour.getIndexSwapGem();
+        }
+
+        let matchGemSizeThanFour = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
+
+        if (matchGemSizeThanFour) {
+            fullData.matchGem = matchGemSizeThanFour
+            return matchGemSizeThanFour.getIndexSwapGem();
+        }
 
         // let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
 
@@ -156,7 +163,7 @@ class Grid {
 
 
         if (matchGems.size > 0) {
-            listMatchGem.push(new GemSwapInfo(currentGem.index, swapGem.index, matchGems.length, currentGem.type));
+            listMatchGem.push(new GemSwapInfo(currentGem.index, swapGem.index, matchGems.size, currentGem.type));
         }
     }
 

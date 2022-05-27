@@ -1,5 +1,3 @@
-// const data = async () => axios.get('https://tourvr.dungxbuif.com/api/places').then((item) => console.log(item.data))
-
 // REQUEST command
 const SWAP_GEM = "Battle.SWAP_GEM";
 const USE_SKILL = "Battle.USE_SKILL";
@@ -600,12 +598,6 @@ async function SendSwapGem(swap) {
 
 	data.putInt("index1", parseInt(indexSwap[0]));
 	data.putInt("index2", parseInt(indexSwap[1]));
-
-	axios.post(
-		'http://gems.dungxbuif.com/api/train-data',
-		fullData)
-		.then((data) => console.log(data))
-	console.log("Full data to check ", fullData)
 
 	SendExtensionRequest(SWAP_GEM, data);
 }

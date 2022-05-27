@@ -75,12 +75,19 @@ class Grid {
             return matchGemSizeThanFour.getIndexSwapGem();
         }
 
-        // let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
+        let newMatchGemSizeThanThree = newListMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
 
-        // if (matchGemSizeThanThree) {
-        //     fullData.matchGem = matchGemSizeThanThree
-        //     return matchGemSizeThanThree.getIndexSwapGem();
-        // }
+        if (newMatchGemSizeThanThree) {
+            fullData.matchGem = newMatchGemSizeThanThree
+            return newMatchGemSizeThanThree.getIndexSwapGem();
+        }
+
+        let matchGemSizeThanThree = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 3);
+
+        if (matchGemSizeThanThree) {
+            fullData.matchGem = matchGemSizeThanThree
+            return matchGemSizeThanThree.getIndexSwapGem();
+        }
 
         // let newMatchGemSword = newListMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
 

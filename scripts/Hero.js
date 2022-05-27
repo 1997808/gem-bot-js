@@ -22,7 +22,6 @@ const HeroIdEnum = {
     GIANT_SNAKE: 106
 };
 
-
 class Hero {
     constructor(objHero) {
         this.objHero = objHero;
@@ -44,7 +43,73 @@ class Hero {
         }
     }
 
-    updateHero(objHero) {
+    updateHero(objHero, team) {
+        let botTurn = isBotTurn()
+        let botTeam = team === 'BOT' ? true : false
+        let change = false
+        let attackChange = objHero.getInt("attack") - this.attack
+        let hpChange = objHero.getInt("hp") - this.hp
+        let manaChange = objHero.getInt("mana") - this.mana
+        let fullMana = objHero.getInt("maxMana") - objHero.getInt("mana")
+        if (attackChange != 0) {
+            change = true
+            if (botTeam) {
+                // ally get more attack
+                pointBase += 0.1 * attackChange
+            } else {
+                // enemy get more attack
+                pointBase -= 0.1 * attackChange
+            }
+        }
+
+        if (hpChange != 0) {
+            change = true
+            if (botTeam) {
+                if (botTurn) {
+                    // bot turn to bot team
+                    pointBase += 0.15 * hpChange
+                } else {
+                    // enemy turn to bot team
+                    pointBase += 0.15 * hpChange
+
+                    // dead
+                    if (objHero.getInt("hp") == 0) {
+                        pointBase -= 2
+                    }
+                }
+            } else {
+                if (botTurn) {
+                    // bot turn to enemy team
+                    pointBase -= 0.15 * hpChange
+
+                    if (objHero.getInt("hp") == 0) {
+                        pointBase += 2
+                    }
+                } else {
+                    // enemy turn to enemy team
+                    pointBase -= 0.15 * hpChange
+                }
+            }
+        }
+
+        if (manaChange != 0) {
+            change = true
+            if (botTeam) {
+                pointBase += 0.35 * manaChange
+                // get mana to full
+                if (fullMana == 0) {
+                    pointBase += 1.2
+                }
+            } else {
+                pointBase -= 0.35 * manaChange
+                // enemy get mana to full
+                if (fullMana == 0) {
+                    pointBase -= 1.2
+                }
+            }
+        }
+        pointBase = Math.floor(pointBase * 100) / 100
+
         this.attack = objHero.getInt("attack");
         this.hp = objHero.getInt("hp");
         this.mana = objHero.getInt("mana");

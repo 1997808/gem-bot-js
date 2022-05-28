@@ -33,7 +33,8 @@ class Grid {
         }
     }
 
-    async recommendSwapGem() {
+    async recommendSwapGem(bot, enemy) {
+        // firstHeroAlive
         let listMatchGem = this.suggestMatch();
 
         // console.log("recommendSwapGem ", listMatchGem);
@@ -68,6 +69,13 @@ class Grid {
             return newMatchGemSizeThanFour.getIndexSwapGem();
         }
 
+        let newMatchGemSword = newListMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
+
+        if (newMatchGemSword && (bot.firstHeroAlive().attack >= enemy.firstHeroAlive().hp)) {
+            fullData.matchGem = newMatchGemSword
+            return newMatchGemSword.getIndexSwapGem();
+        }
+
         let matchGemSizeThanFour = listMatchGem.find(gemMatch => gemMatch.sizeMatch > 4);
 
         if (matchGemSizeThanFour) {
@@ -80,13 +88,6 @@ class Grid {
         // if (matchGemSizeThanThree) {
         //     fullData.matchGem = matchGemSizeThanThree
         //     return matchGemSizeThanThree.getIndexSwapGem();
-        // }
-
-        // let newMatchGemSword = newListMatchGem.find(gemMatch => gemMatch.type == GemType.SWORD);
-
-        // if (newMatchGemSword) {
-        //     fullData.matchGem = newMatchGemSword
-        //     return newMatchGemSword.getIndexSwapGem();
         // }
 
         // console.log("myHeroGemType: ", this.myHeroGemType, "| Array.from(this.myHeroGemType)", Array.from(this.myHeroGemType));

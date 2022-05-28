@@ -6,6 +6,7 @@ class Player {
 
         this.heroes = [];
         this.heroGemType = new Set();
+        this.heroGemType1 = new Set();
     }
 
     getTotalHeroAlive() {
@@ -63,6 +64,32 @@ class Player {
         return this.heroGemType;
     }
 
+    getRecommendGemType1() {
+        this.heroGemType1 = new Set();
+        let target1 = ['THUNDER_GOD', 'MERMAID', 'CERBERUS', 'SEA_GOD']
+        let target2 = ['FIRE_SPIRIT', 'AIR_SPIRIT', 'DISPATER', 'FATE']
+        let target3 = ['MONK', 'SEA_SPIRIT', 'ELIZAH', 'SKELETON']
+
+        for (let i = 0; i < this.getHerosAlive().length; i++) {
+            let hero = this.getHerosAlive()[i];
+
+            if (hero.isFullMana()) {
+                continue;
+            }
+            if (!(target1.indexOf(hero.id) != -1)) {
+                //ton tai, !la ko tontai
+                continue;
+            }
+
+            for (let j = 0; j < hero.gemTypes.length; j++) {
+                let gt = hero.gemTypes[j];
+                this.heroGemType1.add(GemType[gt]);
+            }
+        }
+
+        return this.heroGemType1;
+    }
+
     firstAliveHeroCouldReceiveMana(type) {
         const res = this.heroes.find(hero => hero.isAlive() && hero.couldTakeMana(type));
         return res;
@@ -72,6 +99,7 @@ class Player {
         const cloned = new Player(this.playerId, this.displayName);
         cloned.heroes = this.heroes.map(hero => hero.clone());
         cloned.heroGemType = new Set(Array.from(this.heroGemType));
+        cloned.heroGemType1 = new Set(Array.from(this.heroGemType1));
         cloned.signature = this.signature;
         cloned.metrics = this.metrics;
         return cloned;

@@ -9,13 +9,15 @@ class GridDistinction {
     matchesSize = [];
 }
 class Grid {
-    constructor(gemsCode, gemModifiers, gemTypes) {
+    constructor(gemsCode, gemModifiers, gemTypes, gemTypes1) {
         this.gems = [];
         this.gemeCode = gemsCode;
         this.gemTypes = new Set();
+        this.gemTypes1 = new Set();
         this.updateGems(gemsCode, gemModifiers);
 
         this.myHeroGemType = gemTypes;
+        this.myHeroGemType1 = gemTypes1;
     }
 
     updateGems(gemsCode, gemModifiers) {
@@ -92,13 +94,25 @@ class Grid {
 
         // console.log("myHeroGemType: ", this.myHeroGemType, "| Array.from(this.myHeroGemType)", Array.from(this.myHeroGemType));
 
-        let newMatchGemType = newListMatchGem.find(gemMatch => Array.from(this.myHeroGemType).includes(gemMatch.type));
-        // console.log("matchGem hello: ", matchGemType);
+        let newMatchGemType1 = newListMatchGem.find(gemMatch => Array.from(this.myHeroGemType1).includes(gemMatch.type));
 
-        if (newMatchGemType) {
-            // console.log("newMatchGemType ");
+        if (newMatchGemType1) {
             fullData.matchGem = newMatchGemType
             return newMatchGemType.getIndexSwapGem();
+        }
+
+        let newMatchGemType = newListMatchGem.find(gemMatch => Array.from(this.myHeroGemType).includes(gemMatch.type));
+
+        if (newMatchGemType) {
+            fullData.matchGem = newMatchGemType
+            return newMatchGemType.getIndexSwapGem();
+        }
+
+        let matchGemType = listMatchGem.find(gemMatch => Array.from(this.myHeroGemType).includes(gemMatch.type));
+
+        if (matchGemType) {
+            fullData.matchGem = matchGemType
+            return matchGemType.getIndexSwapGem();
         }
 
         fullData.matchGem = listMatchGem[index]
@@ -412,6 +426,7 @@ class Grid {
         cloned.gems = this.gems.map(gem => gem.clone());
         cloned.gemTypes = new Set(Array.from(this.gemTypes));
         cloned.myHeroGemType = new Set(Array.from(this.myHeroGemType));
+        cloned.myHeroGemType1 = new Set(Array.from(this.myHeroGemType1));
         return cloned;
     }
 }

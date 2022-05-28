@@ -312,7 +312,7 @@ function StartGame(gameSession, room) {
 	}
 
 	// Gems
-	grid = new Grid(gameSession.getSFSArray("gems"), null, botPlayer.getRecommendGemType());
+	grid = new Grid(gameSession.getSFSArray("gems"), null, botPlayer.getRecommendGemType(), botPlayer.getRecommendGemType1());
 	currentPlayerId = gameSession.getInt("currentPlayerId");
 	trace("StartGame ");
 
@@ -629,6 +629,7 @@ function HandleGems(paramz) {
 	}
 	// update gem
 	grid.gemTypes = botPlayer.getRecommendGemType();
+	grid.gemTypes = botPlayer.getRecommendGemType1();
 
 	let gemCode = lastSnapshot.getSFSArray("gems");
 	let gemModifiers = lastSnapshot.getSFSArray("gemModifiers");
